@@ -24,18 +24,36 @@ public class MyTask extends AsyncTask<Void, Integer, String> {
     }
     @Override
     protected String doInBackground(Void... voids) {
-        int i = 0;
-        synchronized (this)
+        int i;
+        synchronized(this)
         {
-            while(i<10){
+            for(i=0; i<=100;i+=8){
+                if(i==96){
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            try{
+                Thread.sleep(1000);
+                publishProgress(i);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            }
+
+
+
+            /*while(i<100){
                 try {
-                    wait(1500);
-                    i++;
+                    wait(1000);
+                    i+=10;
                     publishProgress(i);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }
+            }*/
         }
         return "Download complete...";
     }
@@ -44,8 +62,8 @@ public class MyTask extends AsyncTask<Void, Integer, String> {
     protected void onPreExecute() {
         progressDialog = new ProgressDialog(context);
         progressDialog.setTitle("Downloading in progress...");
-        progressDialog.setMax(10);
-        progressDialog.setProgress(0);
+        progressDialog.setMax(100);
+        progressDialog.setProgress(1);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.show();
     }
